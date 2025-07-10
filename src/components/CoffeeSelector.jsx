@@ -1,3 +1,5 @@
+import React from 'react';
+
 const options = ['Espresso', 'Americano', 'Latte', 'Cappuccino'];
 
 const CoffeeSelector = ({ coffeeType, setCoffeeType }) => {
@@ -18,4 +20,5 @@ const CoffeeSelector = ({ coffeeType, setCoffeeType }) => {
     </div>
   );
 };
+
 export default CoffeeSelector;

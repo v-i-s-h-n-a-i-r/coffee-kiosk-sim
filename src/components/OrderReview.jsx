@@ -1,3 +1,5 @@
+import React from 'react';
+
 const OrderReview = ({ coffeeType, size, onConfirm }) => {
   if (!coffeeType || !size) return null;
 
@@ -15,3 +17,5 @@ const OrderReview = ({ coffeeType, size, onConfirm }) => {
     </div>
   );
 };
+
+export default OrderReview;
