@@ -18,3 +18,4 @@ const CoffeeSelector = ({ coffeeType, setCoffeeType }) => {
     </div>
   );
 };
+export default CoffeeSelector;
