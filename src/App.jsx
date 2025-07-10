@@ -3,6 +3,9 @@ import CoffeeSelector from './components/CoffeeSelector';
 import SizeSelector from './components/SizeSelector';
 import OrderReview from './components/OrderReview';
 
+// Uncomment the following lines to use the original App component
+// import CoffeeSelector from './components/CoffeeSelector';    
+// import SizeSelector from './components/SizeSelector';
 // const App = () => {
 //   const [coffeeType, setCoffeeType] = useState('');
 //   const [size, setSize] = useState('');
