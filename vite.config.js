@@ -4,10 +4,9 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  base: '/coffee-kiosk-sim/', // GitHub Pages base path
-
+  base: '/coffee-kiosk-sim/',  // ✅ required for GitHub Pages
   test: {
-    environment: 'jsdom', // Enables browser-like test behavior
-    globals: true          // Enables `describe`, `it`, `expect`, `vi` without importing
+    environment: 'jsdom',
+    globals: true
   }
 });
