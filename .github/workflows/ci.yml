@@ -6,30 +6,88 @@ on:
   pull_request:
 
 jobs:
-  build:
+  setup:
+    name: 🧱 Setup & Install
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: 📦 Checkout Repository
+        uses: actions/checkout@v4
+        # Output: Pulls your repo code into the workflow runner
+
+      - name: 🧰 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+        # Output: Ensures Node 18 is available in the runner
+
+      - name: 📥 Install Dependencies
+        run: npm install
+        # Output: Installs packages from package.json
+
+  test:
+    name: 🧪 Run Tests
+    runs-on: ubuntu-latest
+    needs: setup
+
+    steps:
+      - name: 📦 Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: 🧰 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      - name: Install dependencies
+      - name: 📥 Install Dependencies
         run: npm install
 
-      - name: Run tests
+      - name: 🧪 Run Vitest Tests
         run: npm run test
+        # Output: Shows test pass/fail results from Vitest
 
-      - name: Lint (optional)
+  lint:
+    name: 🧹 Lint Check
+    runs-on: ubuntu-latest
+    needs: setup
+
+    steps:
+      - name: 📦 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🧰 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: 📥 Install Dependencies
+        run: npm install
+
+      - name: 🧹 Run ESLint
         run: npm run lint || echo "Linting failed but continuing..."
+        # Output: Shows lint errors/warnings, won't fail the pipeline
 
-      - name: SonarCloud Scan
+  sonarcloud:
+    name: 📊 SonarCloud Analysis
+    runs-on: ubuntu-latest
+    needs: [test]  # Only run if tests pass
+
+    steps:
+      - name: 📦 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🧰 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: 📥 Install Dependencies
+        run: npm install
+
+      - name: 📊 SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           projectBaseDir: .
+        # Output: Pushes scan data to SonarCloud dashboard
