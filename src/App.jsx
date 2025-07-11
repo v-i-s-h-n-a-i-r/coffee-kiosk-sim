@@ -60,9 +60,6 @@
 // );
 // };
 
-// export default App;
-
-// 📁 src/App.jsx
 import React from 'react';
 
 const App = () => {
