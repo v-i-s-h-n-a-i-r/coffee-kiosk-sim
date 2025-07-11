@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+   "homepage": "https://v-i-s-h-n-a-i-r.github.io/coffee-kiosk-sim",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
