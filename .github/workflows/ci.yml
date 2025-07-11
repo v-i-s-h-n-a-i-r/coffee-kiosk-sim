@@ -40,7 +40,7 @@ jobs:
         run: npm ci
 
       - name: Run Vitest Tests
-        run: npm run test
+        run: npm run test:ci
 
   lint:
     name: Lint Check
