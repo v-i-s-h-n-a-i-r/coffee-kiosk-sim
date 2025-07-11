@@ -13,20 +13,17 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-        # Output: Pulls your repo code into the workflow runner
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
-        # Output: Ensures Node 18 is available in the runner
 
       - name: Install Dependencies
-        run: npm install
-        # Output: Installs packages from package.json
+        run: npm ci
 
   test:
-    name: Run Tests
+    name: Run Unit Tests
     runs-on: ubuntu-latest
     needs: setup
 
@@ -40,11 +37,10 @@ jobs:
           node-version: 18
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
 
       - name: Run Vitest Tests
         run: npm run test
-        # Output: Shows test pass/fail results from Vitest
 
   lint:
     name: Lint Check
@@ -61,16 +57,15 @@ jobs:
           node-version: 18
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
 
       - name: Run ESLint
         run: npm run lint || echo "Linting failed but continuing..."
-        # Output: Shows lint errors/warnings, won't fail the pipeline
 
-  sonarcloud:
-    name: SonarCloud Analysis
+  security:
+    name: Security Audit
     runs-on: ubuntu-latest
-    needs: [test]  # Only run if tests pass
+    needs: setup
 
     steps:
       - name: Checkout Repository
@@ -82,7 +77,28 @@ jobs:
           node-version: 18
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Run npm audit (high severity and above)
+        run: |
+          npm audit --audit-level=high || echo "Security issues found, review required"
+
+  sonarcloud:
+    name: SonarCloud Analysis
+    runs-on: ubuntu-latest
+    needs: [test]
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: npm ci
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
@@ -90,4 +106,29 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           projectBaseDir: .
-        # Output: Pushes scan data to SonarCloud dashboard
+
+  deploy:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    needs: [test, lint, sonarcloud, security]
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build for production
+        run: npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
