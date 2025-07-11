@@ -36,17 +36,28 @@ const App = () => {
     localStorage.setItem('coffee-order', JSON.stringify(order));
   };
 
+//   return (
+//     <div className="min-h-screen bg-zinc-100 p-6 text-center">
+//       <h1 className="text-3xl font-bold mb-6">Coffee Kiosk</h1>
+//       <div className="space-y-4">
+//         <CoffeeSelector coffeeType={coffeeType} setCoffeeType={setCoffeeType} />
+//         <SizeSelector size={size} setSize={setSize} />
+//         <OrderReview coffeeType={coffeeType} size={size} onConfirm={handleConfirm} />
+//       </div>
+//     </div>
+//   );
+// };
   return (
     <div className="min-h-screen bg-zinc-100 p-6 text-center">
-      <h1 className="text-3xl font-bold mb-6">Coffee Kiosk</h1>
+      <h1 className="text-4xl font-bold text-red-600 mb-2">Coffee Kiosk Test</h1> {/* 👈 Test marker */}
+      <h2 className="text-3xl font-bold mb-6">Coffee Kiosk</h2>
       <div className="space-y-4">
         <CoffeeSelector coffeeType={coffeeType} setCoffeeType={setCoffeeType} />
         <SizeSelector size={size} setSize={setSize} />
         <OrderReview coffeeType={coffeeType} size={size} onConfirm={handleConfirm} />
       </div>
-    </div>
-  );
+  </div>
+);
 };
-
 
 export default App;
